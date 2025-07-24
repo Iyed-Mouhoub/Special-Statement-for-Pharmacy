@@ -23,9 +23,18 @@ import { fr } from "date-fns/locale";
 
 // Add these fields to your validation schema:
 const schema = yup.object().shape({
-  dateDOrdonance: yup.date().required("Date obligatoire"),
-  dateDeFacture: yup.date().required("Date obligatoire"),
-  date: yup.date().required("Date obligatoire"),
+  dateDOrdonance: yup
+    .date()
+    .max(new Date(), "La date ne peut pas être dans le futur")
+    .required("Date obligatoire"),
+  dateDeFacture: yup
+    .date()
+    .max(new Date(), "La date ne peut pas être dans le futur")
+    .required("Date obligatoire"),
+  date: yup
+    .date()
+    .max(new Date(), "La date ne peut pas être dans le futur")
+    .required("Date obligatoire"),
   numeroDeBordereau: yup
     .string()
     .required("Numero de bordereau obligatoire"),
