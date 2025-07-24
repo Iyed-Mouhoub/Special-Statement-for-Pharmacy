@@ -569,8 +569,7 @@ const validateRowForSubmission = (row, index) => {
                     value={row.nAssure} 
                     onChange={e => handleChange(i, "nAssure", e.target.value)}
                     error={!!errors[i]?.nAssure}
-                    helperText={errors[i]?.nAssure || " "} // Always reserve space for helper text
-                    FormHelperTextProps={{ sx: { minHeight: '20px' } }}
+                    helperText={errors[i]?.nAssure || ""}
                     sx={tableInputStyles}
                   />
                 </TableCell>
@@ -580,12 +579,13 @@ const validateRowForSubmission = (row, index) => {
                     value={row.nFacture} 
                     onChange={e => handleChange(i, "nFacture", e.target.value)}
                     error={!!errors[i]?.nFacture}
-                    helperText={errors[i]?.nFacture || " "}
-                    FormHelperTextProps={{ sx: { minHeight: '20px' } }}
+                    helperText={errors[i]?.nFacture || ""}
                     sx={tableInputStyles}
                   />
                 </TableCell>
-                <TableCell sx={tableCellStyles}>
+                
+
+<TableCell sx={{ ...tableCellStyles, padding: '4px' }}>
   <DatePicker
     value={row.dateFacture ? new Date(row.dateFacture) : null}
     onChange={(newValue) => {
@@ -597,9 +597,25 @@ const validateRowForSubmission = (row, index) => {
       textField: {
         size: "small",
         error: !!errors[i]?.dateFacture,
-        helperText: errors[i]?.dateFacture || " ",
-        FormHelperTextProps: { sx: { minHeight: '20px' } },
-        sx: tableInputStyles
+        helperText: errors[i]?.dateFacture || "", 
+        sx: {
+          width: '140px',
+          '& .MuiInputBase-root': {
+            height: '30px',
+            fontSize: '0.7rem',
+          },
+          '& .MuiInputBase-input': {
+            padding: '4px 6px',
+            fontSize: '0.7rem',
+          },
+          '& .MuiSvgIcon-root': {
+            fontSize: '14px',
+            padding: '2px',
+          },
+          '& .MuiInputAdornment-root': {
+            marginLeft: '2px',
+          }
+        }
       }
     }}
   />
@@ -610,8 +626,7 @@ const validateRowForSubmission = (row, index) => {
                     value={row.major} 
                     onChange={e => handleChange(i, "major", e.target.value)}
                     error={!!errors[i]?.major}
-                    helperText={errors[i]?.major || " "}
-                    FormHelperTextProps={{ sx: { minHeight: '20px' } }}
+                    helperText={errors[i]?.major || ""}
                   />
                 </TableCell>
                 <TableCell sx={tableCellStyles}>
@@ -621,8 +636,7 @@ const validateRowForSubmission = (row, index) => {
                     value={row.mtAssure} 
                     onChange={e => handleChange(i, "mtAssure", e.target.value)}
                     error={!!errors[i]?.mtAssure}
-                    helperText={errors[i]?.mtAssure || " "}
-                    FormHelperTextProps={{ sx: { minHeight: '20px' } }}
+                    helperText={errors[i]?.mtAssure || ""}
                     sx={tableInputStyles}
                   />
                 </TableCell>
@@ -633,8 +647,7 @@ const validateRowForSubmission = (row, index) => {
                     value={row.mtOfficine} 
                     onChange={e => handleChange(i, "mtOfficine", e.target.value)}
                     error={!!errors[i]?.mtOfficine}
-                    helperText={errors[i]?.mtOfficine || " "}
-                    FormHelperTextProps={{ sx: { minHeight: '20px' } }}
+                    helperText={errors[i]?.mtOfficine || ""}
                     sx={tableInputStyles}
                   />
                 </TableCell>
@@ -645,8 +658,7 @@ const validateRowForSubmission = (row, index) => {
                     value={row.mtMajor} 
                     onChange={e => handleChange(i, "mtMajor", e.target.value)}
                     error={!!errors[i]?.mtMajor}
-                    helperText={errors[i]?.mtMajor || " "}
-                    FormHelperTextProps={{ sx: { minHeight: '20px' } }}
+                    helperText={errors[i]?.mtMajor || ""}
                     sx={tableInputStyles}
                   />
                 </TableCell>
@@ -657,8 +669,7 @@ const validateRowForSubmission = (row, index) => {
                     onChange={e => handleChange(i, "mtGlobal", e.target.value)}
                     size="small"
                     error={!!errors[i]?.mtGlobal}
-                    helperText={errors[i]?.mtGlobal || " "}
-                    FormHelperTextProps={{ sx: { minHeight: '20px' } }}
+                    helperText={errors[i]?.mtGlobal || ""}
                     sx={tableInputStyles}
                   />
                 </TableCell>    

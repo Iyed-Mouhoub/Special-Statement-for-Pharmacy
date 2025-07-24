@@ -24,17 +24,17 @@ import { fr } from "date-fns/locale";
 // Validation schema
 const schema = yup.object().shape({
   dateDOrdonance: yup
-    .date()
-    .max(new Date(), "La date ne peut pas être dans le futur")
-    .required("Date obligatoire"),
-  dateDeFacture: yup
-    .date()
-    .max(new Date(), "La date ne peut pas être dans le futur")
-    .required("Date obligatoire"),
-  date: yup
-    .date()
-    .max(new Date(), "La date ne peut pas être dans le futur")
-    .required("Date obligatoire"),
+  .date()
+  .max(new Date(new Date().setHours(23, 59, 59, 999)), "La date ne peut pas être dans le futur")
+  .required("Date obligatoire"),
+dateDeFacture: yup
+  .date()
+  .max(new Date(new Date().setHours(23, 59, 59, 999)), "La date ne peut pas être dans le futur")
+  .required("Date obligatoire"),
+date: yup
+  .date()
+  .max(new Date(new Date().setHours(23, 59, 59, 999)), "La date ne peut pas être dans le futur")
+  .required("Date obligatoire"),
   numeroDeBordereau: yup
     .string()
     .required("Numero de bordereau obligatoire"),
@@ -47,31 +47,41 @@ const schema = yup.object().shape({
   nomPharmacien: yup
     .string()
     .required("Nom pharmacien obligatoire"),
-  nombreTotalFactures: yup
-    .number()
-    .typeError("Nombre valide requis")
-    .min(0)
-    .required(),
-  montantTotalBordereau: yup
-    .number()
-    .typeError("Nombre valide requis")
-    .min(0)
-    .required(),
-  montantFormalites: yup
-    .number()
-    .typeError("Nombre valide requis")
-    .min(0)
-    .required(),
-  montantTotalMajoration: yup
-    .number()
-    .typeError("Nombre valide requis")
-    .min(0)
-    .required(),
-  montantGlobalBordereau: yup
-    .number()
-    .typeError("Nombre valide requis")
-    .min(0)
-    .required()
+  // Replace all the numeric field validations with:
+nombreTotalFactures: yup
+.number()
+.transform((val, originalVal) => originalVal === "" ? undefined : val)
+.typeError("Nombre valide requis")
+.min(0, "La valeur doit être positive")
+.required("Champ obligatoire"),
+
+montantTotalBordereau: yup
+.number()
+.transform((val, originalVal) => originalVal === "" ? undefined : val)
+.typeError("Nombre valide requis")
+.min(0, "La valeur doit être positive")
+.required("Champ obligatoire"),
+
+montantFormalites: yup
+.number()
+.transform((val, originalVal) => originalVal === "" ? undefined : val)
+.typeError("Nombre valide requis")
+.min(0, "La valeur doit être positive")
+.required("Champ obligatoire"),
+
+montantTotalMajoration: yup
+.number()
+.transform((val, originalVal) => originalVal === "" ? undefined : val)
+.typeError("Nombre valide requis")
+.min(0, "La valeur doit être positive")
+.required("Champ obligatoire"),
+
+montantGlobalBordereau: yup
+.number()
+.transform((val, originalVal) => originalVal === "" ? undefined : val)
+.typeError("Nombre valide requis")
+.min(0, "La valeur doit être positive")
+.required("Champ obligatoire")
 });
 
 export default function Page1() {
@@ -103,11 +113,11 @@ export default function Page1() {
         nomPharmacien: "MOUHOUB FARID",
         codeCentre: "11915",
         numeroDeBordereau: "",
-        nombreTotalFactures: 0,
-        montantTotalBordereau: 0,
-        montantFormalites: 0,
-        montantTotalMajoration: 0,
-        montantGlobalBordereau: 0
+        nombreTotalFactures: "",
+        montantTotalBordereau: "",
+        montantFormalites: "",
+        montantTotalMajoration: "",
+        montantGlobalBordereau: ""
       };
 
   const {
@@ -170,7 +180,7 @@ export default function Page1() {
                       field.onChange(date);
                       trigger(field.name);
                     }}
-                    maxDate={new Date()}
+                    maxDate={new Date(new Date().setHours(23, 59, 59, 999))}
                     slotProps={{
                       textField: {
                         size: "small",
@@ -196,7 +206,7 @@ export default function Page1() {
                       field.onChange(date);
                       trigger(field.name);
                     }}
-                    maxDate={new Date()}
+                    maxDate={new Date(new Date().setHours(23, 59, 59, 999))}
                     slotProps={{
                       textField: {
                         size: "small",
@@ -222,7 +232,7 @@ export default function Page1() {
                       field.onChange(date);
                       trigger(field.name);
                     }}
-                    maxDate={new Date()}
+                    maxDate={new Date(new Date().setHours(23, 59, 59, 999))}
                     slotProps={{
                       textField: {
                         size: "small",
