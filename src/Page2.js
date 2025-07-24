@@ -9,6 +9,21 @@ import AddIcon from '@mui/icons-material/Add';
 // React-PDF imports
 import { Document, Page, Text, View, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
 
+// Custom styles for wider input fields
+const tableInputStyles = {
+  '& .MuiInputBase-input': {
+    minWidth: '120px', // Minimum width for input fields
+    width: '120px',
+  }
+};
+
+const tableCellStyles = {
+  padding: '12px', // Increased padding from default
+  minWidth: '120px', // Minimum width for each cell
+  width: '150px',
+};
+
+
 // PDF Styles
 const pdfStyles = StyleSheet.create({
   page: {
@@ -497,7 +512,8 @@ const validateRowForSubmission = (row, index) => {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ my: 4 }}>
+    <Container maxWidth="xl" sx={{ my: 4, px: 2 }}>
+
       <Typography variant="h5" fontWeight="bold" mb={2}>Table des factures</Typography>
       
       {validationMessage && (
@@ -540,7 +556,7 @@ const validateRowForSubmission = (row, index) => {
           <TableBody>
             {rows.map((row, i) => (
               <TableRow key={i}>
-                <TableCell>
+                <TableCell sx={tableCellStyles}>
                   <TextField 
                     size="small" 
                     value={row.nAssure} 
@@ -548,9 +564,10 @@ const validateRowForSubmission = (row, index) => {
                     error={!!errors[i]?.nAssure}
                     helperText={errors[i]?.nAssure || " "} // Always reserve space for helper text
                     FormHelperTextProps={{ sx: { minHeight: '20px' } }}
+                    sx={tableInputStyles}
                   />
                 </TableCell>
-                <TableCell>
+                <TableCell sx={tableCellStyles}>
                   <TextField 
                     size="small" 
                     value={row.nFacture} 
@@ -558,9 +575,10 @@ const validateRowForSubmission = (row, index) => {
                     error={!!errors[i]?.nFacture}
                     helperText={errors[i]?.nFacture || " "}
                     FormHelperTextProps={{ sx: { minHeight: '20px' } }}
+                    sx={tableInputStyles}
                   />
                 </TableCell>
-                <TableCell>
+                <TableCell sx={tableCellStyles}>
                   <TextField 
                     type="date" 
                     size="small" 
@@ -570,9 +588,10 @@ const validateRowForSubmission = (row, index) => {
                     error={!!errors[i]?.dateFacture}
                     helperText={errors[i]?.dateFacture || " "}
                     FormHelperTextProps={{ sx: { minHeight: '20px' } }}
+                    sx={tableInputStyles}
                   />
                 </TableCell>
-                <TableCell>
+                <TableCell sx={tableCellStyles}>
                   <TextField 
                     size="small" 
                     value={row.major} 
@@ -582,7 +601,7 @@ const validateRowForSubmission = (row, index) => {
                     FormHelperTextProps={{ sx: { minHeight: '20px' } }}
                   />
                 </TableCell>
-                <TableCell>
+                <TableCell sx={tableCellStyles}>
                   <TextField 
                     type="number" 
                     size="small" 
@@ -591,9 +610,10 @@ const validateRowForSubmission = (row, index) => {
                     error={!!errors[i]?.mtAssure}
                     helperText={errors[i]?.mtAssure || " "}
                     FormHelperTextProps={{ sx: { minHeight: '20px' } }}
+                    sx={tableInputStyles}
                   />
                 </TableCell>
-                <TableCell>
+                <TableCell sx={tableCellStyles}>
                   <TextField 
                     type="number" 
                     size="small" 
@@ -602,9 +622,10 @@ const validateRowForSubmission = (row, index) => {
                     error={!!errors[i]?.mtOfficine}
                     helperText={errors[i]?.mtOfficine || " "}
                     FormHelperTextProps={{ sx: { minHeight: '20px' } }}
+                    sx={tableInputStyles}
                   />
                 </TableCell>
-                <TableCell>
+                <TableCell sx={tableCellStyles}>
                   <TextField 
                     type="number" 
                     size="small" 
@@ -613,9 +634,10 @@ const validateRowForSubmission = (row, index) => {
                     error={!!errors[i]?.mtMajor}
                     helperText={errors[i]?.mtMajor || " "}
                     FormHelperTextProps={{ sx: { minHeight: '20px' } }}
+                    sx={tableInputStyles}
                   />
                 </TableCell>
-                <TableCell>
+                <TableCell sx={tableCellStyles}>
                   <TextField
                     type="number"
                     value={row.mtGlobal}
@@ -624,6 +646,7 @@ const validateRowForSubmission = (row, index) => {
                     error={!!errors[i]?.mtGlobal}
                     helperText={errors[i]?.mtGlobal || " "}
                     FormHelperTextProps={{ sx: { minHeight: '20px' } }}
+                    sx={tableInputStyles}
                   />
                 </TableCell>    
                 <TableCell>
