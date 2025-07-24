@@ -17,6 +17,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useEffect } from "react";
 
 import { fr } from "date-fns/locale";
 
@@ -66,23 +67,53 @@ const schema = yup.object().shape({
 
 export default function Page1() {
   const navigate = useNavigate();
-  const {
-    control,
-    handleSubmit,
-    formState: { errors }
-  } = useForm({
-    resolver: yupResolver(schema),
-    defaultValues: {
-  dateDeFacture: new Date(),
-  dateDOrdonance: new Date(),
-  date: new Date(),
-  codePharmacien: "1901018466",
-  nomPharmacien: "MOUHOUB FARID",
-  codeCentre: "11915",
-  numeroDeBordereau: "", 
+  function parseDate(val) {
+    if (!val) return new Date();
+    if (val instanceof Date) return val;
+    const dateObj = new Date(val);
+    return isNaN(dateObj) ? new Date() : dateObj;
+  }
   
-}
-  });
+  const savedPage1Data = sessionStorage.getItem("page1data");
+  const defaultValues = savedPage1Data 
+    ? (() => {
+        const parsed = JSON.parse(savedPage1Data);
+        return {
+          ...parsed,
+          dateDeFacture: parseDate(parsed.dateDeFacture),
+          dateDOrdonance: parseDate(parsed.dateDOrdonance),
+          date: parseDate(parsed.date),
+        };
+      })()
+    : {
+        dateDeFacture: new Date(),
+        dateDOrdonance: new Date(),
+        date: new Date(),
+        codePharmacien: "1901018466",
+        nomPharmacien: "MOUHOUB FARID",
+        codeCentre: "11915",
+        numeroDeBordereau: "",
+      };
+  
+
+
+const {
+  control,
+  handleSubmit,
+  watch,
+  formState: { errors }
+} = useForm({
+  resolver: yupResolver(schema),
+  defaultValues
+});
+
+const watchedValues = watch();
+
+useEffect(() => {
+  // Save current form data to sessionStorage on every form change
+  sessionStorage.setItem("page1data", JSON.stringify(watchedValues));
+}, [watchedValues]);
+
 
   const onSubmit = (data) => {
     sessionStorage.setItem("page1data", JSON.stringify(data));

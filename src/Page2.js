@@ -272,7 +272,20 @@ export default function Page2() {
     } else {
       setValidationMessage("Aucune donnée trouvée de la page 1. Veuillez retourner à la page 1.");
     }
-  }, []);
+    // Load saved rows data
+  const savedRows = sessionStorage.getItem("bordereauTableRows");
+  if (savedRows) {
+    try {
+      setRows(JSON.parse(savedRows));
+    } catch (e) {
+      console.error("Erreur lors du chargement des lignes sauvegardées:", e);
+    }
+  }
+}, []);
+useEffect(() => {
+  sessionStorage.setItem("bordereauTableRows", JSON.stringify(rows));
+}, [rows]);
+
 
   // Handle input change WITHOUT real-time validation
   const handleChange = (index, field, value) => {
