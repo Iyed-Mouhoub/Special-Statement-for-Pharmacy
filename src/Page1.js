@@ -110,6 +110,7 @@ const {
   control,
   handleSubmit,
   watch,
+  trigger,
   formState: { errors }
 } = useForm({
   resolver: yupResolver(schema),
@@ -149,69 +150,90 @@ useEffect(() => {
             <Stack spacing={2} mt={1}>
   {/* Date d'ordonance */}
   <Controller
-    name="dateDOrdonance"
-    control={control}
-    render={({ field }) => (
-      <DatePicker
-        label="Date d'Ordonance"
-        format="dd/MM/yyyy"
-        value={field.value}
-        onChange={field.onChange}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            size="small"
-            error={!!errors.dateDOrdonance}
-            helperText={errors.dateDOrdonance?.message}
-          />
-        )}
-      />
-    )}
-  />
+  name="dateDOrdonance"
+  control={control}
+  render={({ field }) => (
+    <DatePicker
+      label="Date d'Ordonance"
+      format="dd/MM/yyyy"
+      value={field.value}
+      onChange={(date) => {
+        field.onChange(date);
+        trigger(field.name);  // trigger validation immediately on change
+      }}
+      onBlur={field.onBlur}
+      onError={() => {}}      // ensures MUI DatePicker correctly flags errors
+      maxDate={new Date()}   // optionally restrict future dates in picker UI
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          size="small"
+          error={!!errors.dateDOrdonance}
+          helperText={errors.dateDOrdonance?.message || " "}
+        />
+      )}
+    />
+  )}
+/>
+
 
   {/* Date de Facture */}
   <Controller
-    name="dateDeFacture"
-    control={control}
-    render={({ field }) => (
-      <DatePicker
-        label="Date de Facture"
-        format="dd/MM/yyyy"
-        value={field.value}
-        onChange={field.onChange}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            size="small"
-            error={!!errors.dateDeFacture}
-            helperText={errors.dateDeFacture?.message}
-          />
-        )}
-      />
-    )}
-  />
+  name="dateDeFacture"
+  control={control}
+  render={({ field }) => (
+    <DatePicker
+      label="Date de Facture"
+      format="dd/MM/yyyy"
+      value={field.value}
+      onChange={(date) => {
+        field.onChange(date);
+        trigger(field.name);
+      }}
+      onBlur={field.onBlur}
+      onError={() => {}}
+      maxDate={new Date()}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          size="small"
+          error={!!errors.dateDeFacture}
+          helperText={errors.dateDeFacture?.message || " "}
+        />
+      )}
+    />
+  )}
+/>
+
 
   {/* Date */}
   <Controller
-    name="date"
-    control={control}
-    render={({ field }) => (
-      <DatePicker
-        label="Date"
-        format="dd/MM/yyyy"
-        value={field.value}
-        onChange={field.onChange}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            size="small"
-            error={!!errors.date}
-            helperText={errors.date?.message}
-          />
-        )}
-      />
-    )}
-  />
+  name="date"
+  control={control}
+  render={({ field }) => (
+    <DatePicker
+      label="Date"
+      format="dd/MM/yyyy"
+      value={field.value}
+      onChange={(date) => {
+        field.onChange(date);
+        trigger(field.name);
+      }}
+      onBlur={field.onBlur}
+      onError={() => {}}
+      maxDate={new Date()}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          size="small"
+          error={!!errors.date}
+          helperText={errors.date?.message || " "}
+        />
+      )}
+    />
+  )}
+/>
+
 </Stack>
           </Grid>
         </Grid>

@@ -251,53 +251,77 @@ const emptyRow = {
 
 export default function Page2() {
   const navigate = useNavigate();
-  const [rows, setRows] = useState([{ ...emptyRow }]);
+  const [rows, setRows] = useState(() => {
+    const savedRows = sessionStorage.getItem("bordereauTableRows");
+    if (savedRows) {
+      try {
+        return JSON.parse(savedRows);
+      } catch (e) {
+        console.error("Error parsing saved rows:", e);
+        return [{ ...emptyRow }];
+      }
+    }
+    return [{ ...emptyRow }];
+  });
+  
   const [errors, setErrors] = useState([]);
   const [validationMessage, setValidationMessage] = useState("");
   const [formData, setFormData] = useState({});
   const [saving, setSaving] = useState(false);
 
-  // Load data from Page1 in sessionStorage on component mount
-  useEffect(() => {
-    const page1Data = sessionStorage.getItem("page1data");
-    if (page1Data) {
-      try {
-        const parsedData = JSON.parse(page1Data);
-        setFormData(parsedData);
-        console.log("Loaded form data:", parsedData); // Debug log
-      } catch (e) {
-        console.error("Error parsing page1 data:", e);
-        setValidationMessage("Erreur lors du chargement des données de la page 1");
-      }
-    } else {
-      setValidationMessage("Aucune donnée trouvée de la page 1. Veuillez retourner à la page 1.");
+  // Load data from Page1 and Page2 on component mount
+useEffect(() => {
+  // Load Page1 data
+  const page1Data = sessionStorage.getItem("page1data");
+  if (page1Data) {
+    try {
+      const parsedData = JSON.parse(page1Data);
+      setFormData(parsedData);
+      console.log("Loaded form data:", parsedData);
+    } catch (e) {
+      console.error("Error parsing page1 data:", e);
+      setValidationMessage("Erreur lors du chargement des données de la page 1");
     }
-    // Load saved rows data
+  } else {
+    setValidationMessage("Aucune donnée trouvée de la page 1. Veuillez retourner à la page 1.");
+  }
+
+  // Load saved rows data
   const savedRows = sessionStorage.getItem("bordereauTableRows");
   if (savedRows) {
     try {
-      setRows(JSON.parse(savedRows));
+      const parsedRows = JSON.parse(savedRows);
+      setRows(parsedRows);
+      console.log("Loaded saved rows:", parsedRows);
     } catch (e) {
       console.error("Erreur lors du chargement des lignes sauvegardées:", e);
     }
   }
-}, []);
+}, []); // Empty dependency array - runs only on mount
+
+// Save rows data whenever rows change
 useEffect(() => {
   sessionStorage.setItem("bordereauTableRows", JSON.stringify(rows));
+  console.log("Saved rows to sessionStorage:", rows);
 }, [rows]);
 
 
-  // Handle input change WITHOUT real-time validation
-  const handleChange = (index, field, value) => {
-    const newRows = [...rows];
-    newRows[index][field] = value;
-    setRows(newRows);
 
-    // Clear validation message when user starts typing (but no field validation)
-    if (validationMessage) {
-      setValidationMessage("");
-    }
-  };
+ // Handle input change WITHOUT real-time validation
+const handleChange = (index, field, value) => {
+  const newRows = [...rows];
+  newRows[index][field] = value;
+  setRows(newRows);
+
+  // Clear validation message when user starts typing (but no field validation)
+  if (validationMessage) {
+    setValidationMessage("");
+  }
+  
+  // Optional: Add immediate feedback for debugging
+  console.log(`Updated ${field} for row ${index}:`, value);
+};
+
 
   // Add row
   const addRow = () => {
