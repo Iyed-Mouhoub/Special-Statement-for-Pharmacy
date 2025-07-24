@@ -1,4 +1,4 @@
-import React from "react";
+import React, { version } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Container,
@@ -23,18 +23,21 @@ import { fr } from "date-fns/locale";
 
 // Validation schema
 const schema = yup.object().shape({
-  dateDOrdonance: yup
+  listeNoire: yup
   .date()
   .max(new Date(new Date().setHours(23, 59, 59, 999)), "La date ne peut pas être dans le futur")
   .required("Date obligatoire"),
-dateDeFacture: yup
+  medicaments: yup
   .date()
   .max(new Date(new Date().setHours(23, 59, 59, 999)), "La date ne peut pas être dans le futur")
   .required("Date obligatoire"),
-date: yup
+  date: yup
   .date()
   .max(new Date(new Date().setHours(23, 59, 59, 999)), "La date ne peut pas être dans le futur")
   .required("Date obligatoire"),
+  version: yup
+    .string()
+    .required("Version obligatoire"),
   numeroDeBordereau: yup
     .string()
     .required("Numero de bordereau obligatoire"),
@@ -100,15 +103,16 @@ export default function Page1() {
         const parsed = JSON.parse(savedPage1Data);
         return {
           ...parsed,
-          dateDeFacture: parseDate(parsed.dateDeFacture),
-          dateDOrdonance: parseDate(parsed.dateDOrdonance),
+          medicaments: parseDate(parsed.medicaments),
+          listeNoire: parseDate(parsed.listeNoire),
           date: parseDate(parsed.date),
         };
       })()
     : {
-        dateDeFacture: new Date(),
-        dateDOrdonance: new Date(),
-        date: new Date(),
+        medicaments: new Date(),
+        listeNoire: new Date(),
+        date:new Date(),
+        version: "",
         codePharmacien: "1901018466",
         nomPharmacien: "MOUHOUB FARID",
         codeCentre: "11915",
@@ -167,13 +171,30 @@ export default function Page1() {
               Système CHIFA
             </Typography>
             <Stack spacing={2} mt={1}>
-              {/* Date d'ordonance */}
+
+              {/* Version */}
+
               <Controller
-                name="dateDOrdonance"
+              name="version"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Version"
+                  fullWidth
+                  size="small"
+                  error={!!errors.version}
+                  helperText={errors.version?.message}
+                />
+              )}
+            />
+              {/* Liste Noire */}
+              <Controller
+                name="listeNoire"
                 control={control}
                 render={({ field }) => (
                   <DatePicker
-                    label="Date d'Ordonance"
+                    label="Liste Noire"
                     format="dd/MM/yyyy"
                     value={field.value}
                     onChange={(date) => {
@@ -184,8 +205,8 @@ export default function Page1() {
                     slotProps={{
                       textField: {
                         size: "small",
-                        error: !!errors.dateDOrdonance,
-                        helperText: errors.dateDOrdonance?.message || " ",
+                        error: !!errors.listeNoire,
+                        helperText: errors.listeNoire?.message || " ",
                         onBlur: field.onBlur
                       }
                     }}
@@ -193,13 +214,13 @@ export default function Page1() {
                 )}
               />
 
-              {/* Date de Facture */}
+              {/* Médicaments */}
               <Controller
-                name="dateDeFacture"
+                name="medicaments"
                 control={control}
                 render={({ field }) => (
                   <DatePicker
-                    label="Date de Facture"
+                    label="Médicaments"
                     format="dd/MM/yyyy"
                     value={field.value}
                     onChange={(date) => {
@@ -210,10 +231,10 @@ export default function Page1() {
                     slotProps={{
                       textField: {
                         size: "small",
-                        error: !!errors.dateDeFacture,
-                        helperText: errors.dateDeFacture?.message || " ",
+                        error: !!errors.medicaments,
+                        helperText: errors.medicaments?.message || " ",
                         onBlur: field.onBlur
-                      }
+                    }
                     }}
                   />
                 )}

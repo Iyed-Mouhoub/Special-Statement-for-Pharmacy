@@ -133,15 +133,19 @@ const BordereauPDF = ({ formData, rows }) => (
         <Text style={[pdfStyles.header, { fontSize: 18, textAlign: 'center' }]}>M-T-E-S-S</Text>
         <Text style={{ fontSize: 12, textAlign: 'center', marginBottom: 5 }}>CNAS</Text>
         <Text style={{ fontSize: 12, textAlign: 'right' }}>Système CHIFA</Text>
-        
+
         <View style={{ marginTop: 20 }}>
-          <View style={pdfStyles.row}>
-            <Text style={pdfStyles.label}>Date d'Ordonnance:</Text>
-            <Text style={pdfStyles.value}>{formatDate(formData.dateDOrdonance)}</Text>
+        <View style={pdfStyles.row}>
+            <Text style={pdfStyles.label}>Version:</Text>
+            <Text style={pdfStyles.value}>{formData.version || ""}</Text>
           </View>
           <View style={pdfStyles.row}>
-            <Text style={pdfStyles.label}>Date de Facture:</Text>
-            <Text style={pdfStyles.value}>{formatDate(formData.dateDeFacture)}</Text>
+            <Text style={pdfStyles.label}>Liste Noire:</Text>
+            <Text style={pdfStyles.value}>{formatDate(formData.listeNoire)}</Text>
+          </View>
+          <View style={pdfStyles.row}>
+            <Text style={pdfStyles.label}>Médicaments:</Text>
+            <Text style={pdfStyles.value}>{formatDate(formData.medicaments)}</Text>
           </View>
           <View style={pdfStyles.row}>
             <Text style={pdfStyles.label}>Date:</Text>
@@ -533,6 +537,9 @@ const validateRowForSubmission = (row, index) => {
       {Object.keys(formData).length > 0 && (
         <Alert severity="info" sx={{ mb: 2 }}>
           <div>Données de la page 1 chargées:</div>
+          <div>Version: {formData.version}</div>
+          <div>Liste Noire: {formData.listeNoire ? new Date(formData.listeNoire).toLocaleDateString('fr-FR') : 'Non défini'}</div>
+          <div>Médicaments: {formData.medicaments ? new Date(formData.medicaments).toLocaleDateString('fr-FR') : 'Non défini'}</div>
           <div>Code Centre: {formData.codeCentre}</div>
           <div>Nom Pharmacien: {formData.nomPharmacien} </div> 
           <div>Code Pharmacien: {formData.codePharmacien}</div>
