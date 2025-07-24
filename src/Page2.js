@@ -4,6 +4,12 @@ import { useNavigate } from "react-router-dom";
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 
+import { fr } from "date-fns/locale";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+
+
 
 
 // React-PDF imports
@@ -12,15 +18,15 @@ import { Document, Page, Text, View, StyleSheet, PDFDownloadLink } from '@react-
 // Custom styles for wider input fields
 const tableInputStyles = {
   '& .MuiInputBase-input': {
-    minWidth: '120px', // Minimum width for input fields
-    width: '120px',
+    minWidth: '100px', // Minimum width for input fields
+    width: '100px',
   }
 };
 
 const tableCellStyles = {
   padding: '12px', // Increased padding from default
-  minWidth: '120px', // Minimum width for each cell
-  width: '150px',
+  minWidth: '100px', // Minimum width for each cell
+  width: '100px',
 };
 
 
@@ -512,6 +518,7 @@ const validateRowForSubmission = (row, index) => {
   };
 
   return (
+    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fr}>
     <Container maxWidth="xl" sx={{ my: 4, px: 2 }}>
 
       <Typography variant="h5" fontWeight="bold" mb={2}>Table des factures</Typography>
@@ -579,18 +586,24 @@ const validateRowForSubmission = (row, index) => {
                   />
                 </TableCell>
                 <TableCell sx={tableCellStyles}>
-                  <TextField 
-                    type="date" 
-                    size="small" 
-                    value={row.dateFacture} 
-                    onChange={e => handleChange(i, "dateFacture", e.target.value)} 
-                    InputLabelProps={{ shrink: true }}
-                    error={!!errors[i]?.dateFacture}
-                    helperText={errors[i]?.dateFacture || " "}
-                    FormHelperTextProps={{ sx: { minHeight: '20px' } }}
-                    sx={tableInputStyles}
-                  />
-                </TableCell>
+  <DatePicker
+    value={row.dateFacture ? new Date(row.dateFacture) : null}
+    onChange={(newValue) => {
+      const dateString = newValue ? newValue.toISOString().split('T')[0] : '';
+      handleChange(i, "dateFacture", dateString);
+    }}
+    format="dd/MM/yyyy"
+    slotProps={{
+      textField: {
+        size: "small",
+        error: !!errors[i]?.dateFacture,
+        helperText: errors[i]?.dateFacture || " ",
+        FormHelperTextProps: { sx: { minHeight: '20px' } },
+        sx: tableInputStyles
+      }
+    }}
+  />
+</TableCell>
                 <TableCell sx={tableCellStyles}>
                   <TextField 
                     size="small" 
@@ -699,5 +712,6 @@ const validateRowForSubmission = (row, index) => {
         </Button>
       </Box>
     </Container>
+    </LocalizationProvider>
   );
 }
