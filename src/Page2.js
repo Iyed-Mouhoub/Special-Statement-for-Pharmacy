@@ -199,7 +199,12 @@ const BordereauPDF = ({ formData, rows }) => (
     {/* Page 2: Table */}
     <Page size="A4" style={pdfStyles.page}>
       <Text style={[pdfStyles.header, { fontSize: 16, textAlign: 'center', marginBottom: 20 }]}>Table des Factures</Text>
-      
+      {/* Add Bordereau Number display */}
+  <View style={{ marginBottom: 15, alignItems: 'center' }}>
+    <Text style={[pdfStyles.header, { fontSize: 12, textAlign: 'center' }]}>
+      Numéro de Bordereau: {formData.numeroDeBordereau || ""}
+    </Text>
+  </View>
       <View style={pdfStyles.table}>
         {/* Table Header */}
         <View style={pdfStyles.tableRow}>

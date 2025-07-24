@@ -271,7 +271,7 @@ export default function Page1() {
 
         {/* Section Title */}
         <Typography variant="h4" align="center" gutterBottom mb={4}>
-          Bordereau Special
+          Bordereau Spécial
         </Typography>
 
         {/* Info Fields */}
